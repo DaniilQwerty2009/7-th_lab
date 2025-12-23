@@ -1,12 +1,17 @@
 #include <iostream>
 
-#include "Template_Queue.h"
+#include "TemplateQueue.h"
 
 
 
 
 int main()
 {
+    int source[5] = {0,1,2,3,4};
+
+    Queue <int> array1(5, source);
+
+
     return 0;
 }
 

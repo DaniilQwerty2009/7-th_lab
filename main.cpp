@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 #include "TemplateQueue.h"
 
@@ -9,8 +10,8 @@ using std::endl;
 int main()
 {
     cout << std::setfill('=') << std::setw(60) << '=' << endl;
-    cout << "ЛАБОРАТОРНАЯ РАБОТА №6" << endl; 
-    cout << "ОБРАБОТКА ИСКЛЮЧИТЕЛЬНЫХ СИТУАЦИЙ" << endl;
+    cout << "ЛАБОРАТОРНАЯ РАБОТА №7" << endl; 
+    cout << "ПРИМЕНЕНИЕ ШАБЛОНОВ ФУНКЦИЙ И КЛАССОВ" << endl;
     cout << std::setfill('=') <<std::setw(60) << '=' << endl;
 
     Queue <char> array1(3);

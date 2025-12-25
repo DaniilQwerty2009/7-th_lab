@@ -3,17 +3,36 @@
 #include "TemplateQueue.h"
 
 
-
+using std::cout;
+using std::endl;
 
 int main()
 {
-    int source[5] = {0,1,2,3,4};
+    cout << std::setfill('=') << std::setw(60) << '=' << endl;
+    cout << "ЛАБОРАТОРНАЯ РАБОТА №6" << endl; 
+    cout << "ОБРАБОТКА ИСКЛЮЧИТЕЛЬНЫХ СИТУАЦИЙ" << endl;
+    cout << std::setfill('=') <<std::setw(60) << '=' << endl;
 
-    Queue <int> array1(5, source);
+    Queue <char> array1(3);
 
-    array1.print();
+    try
+    {
+        array1.add('a');
+        array1.add('b');
+        array1.add('c');
+        
+        cout << array1 << endl;
 
+        array1.extract();
+        array1.extract();
+        
+    }
+    catch(TemplateQueueErrors &err)
+    {
+        std::cout << err.what() << std::endl;
+    }
 
+    cout << array1 << endl;
     return 0;
 }
 

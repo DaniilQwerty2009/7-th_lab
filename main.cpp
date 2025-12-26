@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <windows.h>
 
 #include "TemplateQueue.h"
 
@@ -9,31 +10,41 @@ using std::endl;
 
 int main()
 {
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+
     cout << std::setfill('=') << std::setw(60) << '=' << endl;
     cout << "ЛАБОРАТОРНАЯ РАБОТА №7" << endl; 
     cout << "ПРИМЕНЕНИЕ ШАБЛОНОВ ФУНКЦИЙ И КЛАССОВ" << endl;
     cout << std::setfill('=') <<std::setw(60) << '=' << endl;
 
-    Queue <char> array1(3);
+    cout << "Создадим две очереди одного шаблонного класса:" << endl;
+
+    enum lens {intLen = 10, charLen = 5};
+
+    Queue <int> intQueue(intLen);
 
     try
     {
-        array1.add('a');
-        array1.add('b');
-        array1.add('c');
-        
-        cout << array1 << endl;
-
-        array1.extract();
-        array1.extract();
-        
+        for(int i = 0, counter = 0; counter < intLen ; ++i)
+        {
+            if(i%2 == 0)
+            {
+                intQueue.add(i);
+                counter++;
+            }
+        }
     }
     catch(TemplateQueueErrors &err)
-    {
-        std::cout << err.what() << std::endl;
-    }
+        { cout << err.what() << endl; }
 
-    cout << array1 << endl;
+    char ourCharArray[charLen] = {'A', 'B', 'C', 'D', 'E'};
+    Queue <char> charQueue(charLen, charLen, ourCharArray);
+
+    cout << intQueue << endl;
+    cout << charQueue << endl;
+
+   
     return 0;
 }
 

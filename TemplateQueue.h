@@ -8,27 +8,30 @@ template <typename T> class Queue
 {
 private:
     const int queueLenght;
-    int elemCounter;
+    int elemQty;
+
+    int head;
+    int tail;
 
     T* array = nullptr;    
 
 public:
-    Queue(int lenght = 0): queueLenght(lenght), elemCounter(0)
-        { array = new T[lenght]; }
+    Queue(int arrayLenght = 0): queueLenght(arrayLenght), elemQty(0), head(0), tail(elemQty)
+        { array = new T[arrayLenght]; }
 
-    Queue(int lenght, T source[]): queueLenght(lenght), elemCounter(lenght)
+    Queue(int arrayLenght, int elemQty, T source[]): queueLenght(arrayLenght), elemQty(elemQty), head(0), tail(elemQty - 1)
     {
-        array = new T[lenght];
+        array = new T[arrayLenght];
 
-        for(int i = 0; i < lenght; ++i)
+        for(int i = 0; i < arrayLenght; ++i)
             array[i] = source[i];
     }
 
-    Queue(Queue& other): queueLenght(other.queueLenght), elemCounter(other.elemCounter)
+    Queue(Queue& other): queueLenght(other.queueLenght), elemQty(other.elemQty)
     {
         delete array;
 
-        for(int i = 0; i < elemCounter; ++i)
+        for(int i = 0; i < elemQty; ++i)
         {
             array[i] = other.array[i];
         }
@@ -48,12 +51,13 @@ public:
 
     T extract();
     void add(T newElement);
+    int getOurIndex(int index) const inline;
 };
 
 template <typename T> 
     void Queue <T>::print(std::ostream& fout) const
     {
-        if(elemCounter == 0)
+        if(elemQty == 0)
         {
             std::cout << "\n";
             return;
@@ -61,10 +65,10 @@ template <typename T>
 
         else
         {
-            for(int i = 0; i < elemCounter; ++i)
+            for(int i = 0; i < elemQty; ++i)
             {
                 fout << this->array[i];
-                if(i < elemCounter - 1)
+                if(i < elemQty - 1)
                 std::cout << " <- ";
             }
         }
@@ -73,29 +77,37 @@ template <typename T>
 template <typename T>
     T Queue <T>::extract()
     {
-        if(elemCounter == 0)
+        if(elemQty == 0)
             throw EmptyQueueError();
         
         T extracted = array[0];
 
-        for(int i = 0; i < elemCounter - 1; ++i)
+        for(int i = 0; i < elemQty - 1; ++i)
             array[i] = array[i+1];
 
-        elemCounter--;
+        elemQty--;
+
         return extracted;
     }
 
     template <typename T>
         void Queue <T>::add(T newElement)
         {
-            if(elemCounter == queueLenght)
+            if(elemQty == queueLenght)
                 throw OwerflowQueueError();
 
-            array[elemCounter++] = newElement;
+            array[elemQty++] = newElement;
         }
 
 
-
+    template <typename T>
+        int Queue <T>::getOurIndex(int index) const inline
+        {
+            if(index > elemQty)
+                return index % elemQty;
+        else
+            return index;
+        }
 
 
 

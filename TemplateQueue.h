@@ -51,7 +51,7 @@ public:
 
     T extract();
     void add(T newElement);
-    int getOurIndex(int index) const inline;
+    int getOurIndex(int index) const;
 };
 
 template <typename T> 
@@ -80,35 +80,42 @@ template <typename T>
         if(elemQty == 0)
             throw EmptyQueueError();
         
-        T extracted = array[0];
+        T extracted = array[head];
 
-        for(int i = 0; i < elemQty - 1; ++i)
-            array[i] = array[i+1];
-
+        head = getOurIndex(head + 1);
         elemQty--;
 
         return extracted;
     }
 
+
     template <typename T>
         void Queue <T>::add(T newElement)
         {
-            if(elemQty == queueLenght)
+            if(queueLenght == 0)
                 throw OwerflowQueueError();
 
-            array[elemQty++] = newElement;
+            if(elemQty == queueLenght)
+                throw OwerflowQueueError();
+            
+            if(elemQty == 0)
+            {
+                head = newElement;
+                return;
+            }
+
+            tail = getOurIndex(tail + 1);
+            tail = newElement;
         }
 
 
     template <typename T>
-        int Queue <T>::getOurIndex(int index) const inline
+        int Queue <T>::getOurIndex(int index) const
         {
             if(index > elemQty)
-                return index % elemQty;
-        else
-            return index;
+                return (index % queueLenght) - 1;   //Остаток от деления - позиция элемента (счет с единицы, так что -1)
+            else
+                return index;
         }
-
-
 
 #endif

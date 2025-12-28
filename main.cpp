@@ -18,11 +18,11 @@ int main()
     cout << "ПРИМЕНЕНИЕ ШАБЛОНОВ ФУНКЦИЙ И КЛАССОВ" << endl;
     cout << std::setfill('=') <<std::setw(60) << '=' << endl;
 
-    cout << "Создадим две очереди одного шаблонного класса:" << endl;
+    cout << "Создадим два объекта-очереди одного шаблонного класса:" << endl;
 
     enum arrayLens {intLen = 10, charLen = 5};
 
-    Queue <int> intQueue(intLen);
+    Queue <int> intQueue(intLen);   //int очередь
 
     try
     {
@@ -38,16 +38,76 @@ int main()
     catch(TemplateQueueErrors &err)
         { cout << err.what() << endl; }
 
-    char ourCharArray[charLen] = {'A', 'B', 'C', 'D', 'E'};
+    char ourCharArray[charLen] = {'A', 'B', 'C', 'D', 'E'};     //char очередь
     Queue <char> charQueue(charLen, charLen, ourCharArray);
 
-    intQueue.extract();
-    intQueue.add(9999);
-
+    
     cout << intQueue << endl;
     cout << charQueue << endl;
 
+    cout << std::setfill('-') <<std::setw(60) << '-' << endl;
+
+    cout << "Извлекем несколько объектов каждой очереди, после добавим несколько произвольных значений." << endl << endl;
     
+    int firstInt;
+    int secondInt;
+
+    char firstChar;
+    char secondChar;
+
+    try     //Извлечение первых элементов
+    {
+        firstInt = intQueue.extract();
+        secondInt = intQueue.extract();
+
+        firstChar = charQueue.extract();
+        secondChar = charQueue.extract();
+    }
+    catch(TemplateQueueErrors& err)
+    {
+        cout << err.what() << endl;
+    }
+
+    cout << "Извлечены элементы: " << endl;
+    cout << firstInt << " и " << secondInt << endl;
+    cout << firstChar << " и " << secondChar << endl;
+
+    cout << "Очереди приняли вид:" << endl;
+    
+    cout << intQueue << endl;
+    cout << charQueue << endl;
+
+    cout << std::setfill('-') <<std::setw(60) << '-' << endl;
+
+    cout << "Добавим пару произвольных значений в каждую очередь." << endl << endl;
+
+    try     //Добавление элементов в конец очередей
+    {
+        intQueue.add(99);
+        intQueue.add(100);
+
+        charQueue.add('Y');
+        charQueue.add('Z');
+    }
+    catch(TemplateQueueErrors& err)
+    {
+        cout << err.what() << endl;
+    }
+
+    cout << "Очереди приняли вид:" << endl;
+    
+    cout << intQueue << endl;
+    cout << charQueue << endl;
+
+    cout << std::setfill('-') <<std::setw(60) << '-' << endl;
+
+    cout << "Продемонстрируем цикличность очереди путем непрерываного перебора элементов по индексам в цикле for для i от 0 до 25:" << endl;
+
+    for(int i = intQueue.getHeadIndex(); i <= 25; ++i)
+        cout << intQueue[i] << ((i == 25)? "\n": ", ");
+
+    cout << std::setfill('=') <<std::setw(60) << '=' << endl;
+    cout << "Завершение программы..." << endl;
    
     return 0;
 }

@@ -7,8 +7,8 @@
 template <typename T> class Queue
 {
 private:
-    const int queueLenght;
-    int elemQty;
+    const int queueLenght;  //Параметр-размерность очереди
+    int elemQty;            //Кол-во элементов
 
     int head;
     int tail;
@@ -16,9 +16,11 @@ private:
     T* array = nullptr;    
 
 public:
+    //Конструктор по умолчанию
     Queue(int arrayLenght = 0): queueLenght(arrayLenght), elemQty(0), head(0), tail(elemQty)
         { array = new T[arrayLenght]; }
 
+    //Конструктор для копирования из массива
     Queue(int arrayLenght, int elemQty, T source[]): queueLenght(arrayLenght), elemQty(elemQty), head(0), tail(elemQty - 1)
     {
         array = new T[arrayLenght];
@@ -27,19 +29,28 @@ public:
             array[i] = source[i];
     }
 
-    Queue(Queue& other): queueLenght(other.queueLenght), elemQty(other.elemQty)
+    //Конструктор копирования
+    Queue(Queue& other): queueLenght(other.queueLenght), elemQty(other.elemQty), head(0), tail(elemQty - 1)
     {
         delete array;
+        array = new T[queueLenght];
 
-        for(int i = 0; i < elemQty; ++i)
+        for(int i = 0, j = other.getHeadIndex(); i < elemQty; ++i)
         {
-            array[i] = other.array[i];
+            array[i] = other.array[j];
+            j = getOurIndex(++j);
         }
     }
     
     ~Queue()
         { delete[] array; }
 
+
+    
+    int getHeadIndex() const
+    {
+        return head;
+    }
 
     void print(std::ostream& fout = std::cout) const;
 
@@ -49,20 +60,19 @@ public:
         return fout;
     }
 
-    T& operator[](int index) = delete;
-    const T& operator[](int index) const;
+    const T& operator[](int index) const;       //Показать по индексу
 
-    T extract();
-    const T& front() const;
-    const T& back() const;
-    void add(T newElement);
-    int getOurIndex(int index) const;
+    T extract();        //Извлечение певрого
+    const T& front() const;     //Показать первый
+    const T& back() const;      //Показать последний
+    void add(T newElement);     //Добавление в конец
+    int getOurIndex(int index) const;       //"Цикличный" индекс - при переходе за крайнее значение возвращается в начало пока не дойдет до нужного
 };
 
 template <typename T> 
     void Queue <T>::print(std::ostream& fout) const
     {
-        if(elemQty == 0)
+        if(elemQty == 0)        //Пропускаем пустую очередь
         {
             std::cout << "\n";
             return;
@@ -72,7 +82,7 @@ template <typename T>
         {
             for(int i = 0, j = head; i < elemQty; ++i)
             {
-                fout << this->array[getOurIndex(j++)];
+                fout << this->array[getOurIndex(j++)];      //Печатем поэлементно
                 
                 if(i < elemQty - 1)
                     fout << " <- ";
@@ -83,12 +93,12 @@ template <typename T>
 template <typename T>
     T Queue <T>::extract()
     {
-        if(elemQty == 0)
+        if(elemQty == 0)            //Ошибка при попытке извлечь из пустой очереди
             throw EmptyQueueError();
         
         T extracted = array[head];
 
-        head = getOurIndex(head + 1);
+        head = getOurIndex(head + 1);   //Обновляем индекс первого
         elemQty--;
 
         return extracted;
@@ -98,10 +108,10 @@ template <typename T>
     template <typename T>
         void Queue <T>::add(T newElement)
         {
-            if(queueLenght == 0)
+            if(queueLenght == 0)            //Ошибка переполнения очереди
                 throw OwerflowQueueError();
 
-            if(elemQty == queueLenght)
+            if(elemQty == queueLenght)      //Ошибка переполнения очереди
                 throw OwerflowQueueError();
             
             if((elemQty++) == 0)
@@ -110,7 +120,7 @@ template <typename T>
                 return;
             }
 
-            tail = getOurIndex(tail + 1);
+            tail = getOurIndex(tail + 1);   //Обновляем индекс последнего
             array[tail] = newElement;
         }
 
@@ -118,7 +128,7 @@ template <typename T>
     template <typename T>
         int Queue <T>::getOurIndex(int index) const
         {
-            if(index > elemQty-1)
+            if(index > elemQty-1)           //Если искомый индекс больше длинны очереди, ищем по остатку от деления (остаток - новый индекс) 
                 return (index % queueLenght);
             else
                 return index;

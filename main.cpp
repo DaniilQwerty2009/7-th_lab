@@ -20,7 +20,7 @@ int main()
 
     cout << "Создадим две очереди одного шаблонного класса:" << endl;
 
-    enum lens {intLen = 10, charLen = 5};
+    enum arrayLens {intLen = 10, charLen = 5};
 
     Queue <int> intQueue(intLen);
 
@@ -41,9 +41,13 @@ int main()
     char ourCharArray[charLen] = {'A', 'B', 'C', 'D', 'E'};
     Queue <char> charQueue(charLen, charLen, ourCharArray);
 
+    intQueue.extract();
+    intQueue.add(9999);
+
     cout << intQueue << endl;
     cout << charQueue << endl;
 
+    
    
     return 0;
 }

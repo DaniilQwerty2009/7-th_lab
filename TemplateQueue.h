@@ -49,7 +49,12 @@ public:
         return fout;
     }
 
+    T& operator[](int index) = delete;
+    const T& operator[](int index) const;
+
     T extract();
+    const T& front() const;
+    const T& back() const;
     void add(T newElement);
     int getOurIndex(int index) const;
 };
@@ -65,11 +70,12 @@ template <typename T>
 
         else
         {
-            for(int i = 0; i < elemQty; ++i)
+            for(int i = 0, j = head; i < elemQty; ++i)
             {
-                fout << this->array[i];
+                fout << this->array[getOurIndex(j++)];
+                
                 if(i < elemQty - 1)
-                std::cout << " <- ";
+                    fout << " <- ";
             }
         }
     }
@@ -98,24 +104,42 @@ template <typename T>
             if(elemQty == queueLenght)
                 throw OwerflowQueueError();
             
-            if(elemQty == 0)
+            if((elemQty++) == 0)
             {
-                head = newElement;
+                array[tail] = newElement;
                 return;
             }
 
             tail = getOurIndex(tail + 1);
-            tail = newElement;
+            array[tail] = newElement;
         }
 
 
     template <typename T>
         int Queue <T>::getOurIndex(int index) const
         {
-            if(index > elemQty)
-                return (index % queueLenght) - 1;   //Остаток от деления - позиция элемента (счет с единицы, так что -1)
+            if(index > elemQty-1)
+                return (index % queueLenght);
             else
                 return index;
+        }
+
+    template <typename T>
+        const T& Queue <T>::front() const
+        {
+            return array[head];
+        }
+
+    template <typename T>
+        const T& Queue <T>::back() const
+        {
+            return array[tail];
+        }
+
+    template <typename T>
+        const T& Queue <T>::operator[](int index) const
+        {
+            return array[getOurIndex(index)];
         }
 
 #endif

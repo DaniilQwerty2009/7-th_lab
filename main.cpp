@@ -39,7 +39,7 @@ int main()
         { cout << err.what() << endl; }
 
     char ourCharArray[charLen] = {'A', 'B', 'C', 'D', 'E'};     //char очередь
-    Queue <char> charQueue(charLen, charLen, ourCharArray);
+    Queue <char> charQueue(charLen*2, charLen, ourCharArray);
 
     
     cout << intQueue << endl;

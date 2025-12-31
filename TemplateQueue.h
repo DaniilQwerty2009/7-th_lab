@@ -21,7 +21,10 @@ public:
         { array = new T[arrayLenght]; }
 
     //Конструктор для копирования из массива
-    Queue(int arrayLenght, int elemQty, T source[]): queueLenght(arrayLenght), elemQty(elemQty), head(0), tail(elemQty - 1)
+    Queue(int arrayLenght,  //Выделение памяти под кол-во элементов
+          int elemQty,      //Кол-во импортируемых элементов
+          T source[])     //Источник импорта
+        : queueLenght(arrayLenght), elemQty(elemQty), head(0), tail(elemQty - 1)
     {
         array = new T[arrayLenght];
 
